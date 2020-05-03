@@ -13,11 +13,13 @@ public class enemy_ai : MonoBehaviour
     public int num;
     public float dist;
     Rigidbody2D rb;
+    enemy_flip flip;
     // Start is called before the first frame update
     void Start()
     {
         attack_time=0f;
         rb=gameObject.GetComponent<Rigidbody2D>();
+        flip=gameObject.GetComponent<enemy_flip>();
     }
 
     // Update is called once per frame
@@ -27,6 +29,8 @@ public class enemy_ai : MonoBehaviour
          dist=Vector2.Distance(transform.position,player.position);
         if(dist<5f&&dist>stop)
         {
+            flip.fliping();
+            
             transform.position=Vector2.MoveTowards(transform.position,player.position,speed);
             enemy.SetBool("on_move",true);
             rb.constraints=RigidbodyConstraints2D.None;

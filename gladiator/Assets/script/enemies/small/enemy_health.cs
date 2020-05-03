@@ -20,6 +20,7 @@ public class enemy_health : MonoBehaviour
     public GameObject player;
    Animator playeranimation;
     Animator enemyanimations;
+    enemy_flip flip;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class enemy_health : MonoBehaviour
         enemydamge=player.GetComponent<fighting>();
         playerstat=player.GetComponent<Stats>();
         playeranimation=player.GetComponent<Animator>();
-        
+        flip=gameObject.GetComponent<enemy_flip>();
     }
 
     // Update is called once per frame
@@ -72,10 +73,31 @@ public class enemy_health : MonoBehaviour
                     }
                
                   }    else if(playeranimation.GetCurrentAnimatorStateInfo(0).IsName("Defence_punch"))
-                    { player.GetComponent<particlemanager>().i=2;
+                    { 
+                        if(flip.dir>0f&&player.GetComponent<Transform>().rotation==Quaternion.Euler(0f,0f,0f))
+                        {
+                            
+                             playerstat.health-=playerdamage;
+                                player.GetComponent<particlemanager>().i=1;
+                                player.GetComponent<particlemanager>().paritclecaller();
+                                   i=2;    
+                                sound();
+                        }
+                        else if(flip.dir<=0f&&player.GetComponent<Transform>().rotation==Quaternion.Euler(0f,180f,0f))
+                        {
+                              playerstat.health-=playerdamage;
+                                player.GetComponent<particlemanager>().i=1;
+                                player.GetComponent<particlemanager>().paritclecaller();
+                                   i=2;    
+                                sound();
+                        }
+                        else{
+                            player.GetComponent<particlemanager>().i=2;
                                 player.GetComponent<particlemanager>().paritclecaller();
                             i=1;    
-                        sound();
+                            sound();
+                        }
+                       
                     }else if(enemyattack.dist<=enemyattack.stop)
                         {
                                 playerstat.health-=playerdamage;
